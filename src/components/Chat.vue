@@ -1,42 +1,42 @@
 <template>
   <div>
     <h1>I am chat</h1>
-
-    <div>
-      <button @click="selectedUser = 'Joe'">Joe</button>
-      <button @click="selectedUser = 'Goon'">Goon</button>
-      <button @click="selectedUser = 'Tsuki'">Tsuki</button>
-    </div>
-
-    <br/>
-
-    <div v-for="message in messages" :key="message">
-      <div>{{ message.user }}: {{ message.message }}</div>
-    </div>
-
-    <br />
-
-    <input type="text" placeholder="..." />
-    <button>
-      send<span v-if="selectedUser"> as {{ selectedUser }}</span>
-    </button>
+    <Rooms :conversations="conversations" @selectConversation="selectConversation" />
+    <Conversation v-if="selectedConversation" :selectedConversation="selectedConversation" />
   </div>
 </template>
 
 <script>
+import Rooms from './Rooms.vue';
+import Conversation from './Conversation.vue';
+
 export default {
   name: 'Chat',
+  components: {
+    Rooms, Conversation,
+  },
   data() {
     return {
-      selectedUser: null,
+      selectedConversation: null,
+      users: [
+        { uid: 3 },
+      ],
       messages: [
-        { user: 'Joe', message: 'hey' },
-        { user: 'Tsuki', message: 'Meow' },
-        { user: 'Joe', message: 'Hi cat' },
-        { user: 'Goon', message: 'Oh, Tsuki!' },
-        { user: 'Tsuki', message: 'Mweooooow' },
+        {
+          id: 10, conversation_id: 3, sender_uid: 3, message: 'Meow', timestamp: '111',
+        },
+      ],
+      conversations: [
+        { id: 1, name: 'Joe' },
+        { id: 2, name: 'Goon' },
+        { id: 3, name: 'Tsuki' },
       ],
     };
+  },
+  methods: {
+    selectConversation(conversation) {
+      this.selectedConversation = conversation;
+    },
   },
 };
 </script>
